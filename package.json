@@ -1,11 +1,10 @@
 {
   "name": "gitbook-plugin-emqx-docs",
-  "version": "1.0.0",
+  "version": "0.0.10",
   "description": "EMQ X 文档插件",
   "main": "index.js",
   "author": "<wivwiv bigpar@qq.com>",
   "license": "MIT",
-  "private": true,
   "engines": {
     "gitbook": ">1.x.x"
   },

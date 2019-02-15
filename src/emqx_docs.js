@@ -12,6 +12,12 @@ require(['gitbook', 'jQuery'], function (gitbook, $) {
   }
 
   function insertBlock() {
+
+    var doc = document.querySelector('#book-search-input input')
+    if (doc && doc.placeholder === '輸入並搜尋') {
+      doc.placeholder = '请输入并搜索'
+    }
+
     // 获取 gitbook 配置
     var config = gitbook.state.config.pluginsConfig['emqx-docs']
     var version = ['3.0']
@@ -31,6 +37,11 @@ require(['gitbook', 'jQuery'], function (gitbook, $) {
   </div>`
       var summary = document.querySelector('.summary')
       var li = document.createElement('li')
+      var divider = document.querySelector('.summary li.divider')
+      if (divider) {
+        divider.remove()
+      }
+      li.className = 'version--wrapper'
       li.innerHTML = html
       summary.appendChild(li)
     }
