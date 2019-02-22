@@ -1,6 +1,4 @@
-require(['gitbook', 'jQuery'], function (gitbook, $) {
-
-
+require(['gitbook', 'jQuery'], function(gitbook, $) {
 
   function $docsChangeLang(lang) {
     lang = lang || 'zh'
@@ -22,19 +20,30 @@ require(['gitbook', 'jQuery'], function (gitbook, $) {
     var config = gitbook.state.config.pluginsConfig['emqx-docs']
     var version = ['3.0']
 
+    var lang = /\/zh/.test(location.href) ? 'zh' : 'en'
+    var langeLabel = lang === 'zh' ? '语言' : 'Language'
+
     // 插入版本切换
-    function insertVersionChange() {
+    function insertToggleElement() {
       var gitLink = document.querySelector('.gitbook-link')
       gitLink && gitLink.parentElement && gitLink.parentElement.remove()
       var html =
-        `<div id="version-toggle">
-    Version
-    <select onchange="versionChange">
-      ${version.map($ => {
-        return '<option value="'+ $ + '">' + $ + '</option>'
-      }).join(' ')}
-    </select>
-  </div>`
+          `<div id="version-toggle">
+              ${ lang === 'zh' ? '版本' : 'Version' }
+              <select>
+                ${version.map($ => {
+            return '<option value="' + $ + '">' + $ + '</option>'
+          }).join(' ')}
+              </select>
+          </div>
+          <div id="language-toggle">
+            ${langeLabel}
+            <select id="language-change">
+              <option value="en" ${lang === 'en' ? 'selected' : ''}>English</option>
+              <option value="zh" ${lang === 'zh' ? 'selected' : ''}>中文</option>
+            </select>
+          </div>`
+
       var summary = document.querySelector('.summary')
       var li = document.createElement('li')
       var divider = document.querySelector('.summary li.divider')
@@ -44,6 +53,14 @@ require(['gitbook', 'jQuery'], function (gitbook, $) {
       li.className = 'version--wrapper'
       li.innerHTML = html
       summary.appendChild(li)
+
+      $('#language-change').change(function() {
+        lang = $('#language-change option:selected').val()
+        if (!['zh', 'en'].includes(lang) || location.href.includes('/' + lang)) {
+          return
+        }
+        location.href = location.href.replace(/\/zh|\/en/, '/' + lang)
+      })
     }
 
     function insertI18N() {
@@ -63,16 +80,12 @@ require(['gitbook', 'jQuery'], function (gitbook, $) {
 
     setTimeout(() => {
       if (config.version) {
-        insertVersionChange()
+        insertToggleElement()
       }
-      if (config.i18n) {
-        insertI18N()
-      }
-    }, 10);
+    }, 10)
   }
 
-
-  gitbook.events.bind('page.change', function () {
+  gitbook.events.bind('page.change', function() {
     insertBlock()
   })
 })
