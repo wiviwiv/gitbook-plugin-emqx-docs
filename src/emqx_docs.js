@@ -37,7 +37,6 @@ require(['gitbook', 'jQuery'], function(gitbook, $) {
               </select>
           </div>
           <div id="language-toggle">
-            ${langeLabel}
             <select id="language-change">
               <option value="en" ${lang === 'en' ? 'selected' : ''}>English</option>
               <option value="zh" ${lang === 'zh' ? 'selected' : ''}>中文</option>
